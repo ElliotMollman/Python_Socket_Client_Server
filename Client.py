@@ -1,5 +1,5 @@
 import socket
-def send_data(dest_ip, dest_port, message):
+def send_data(dest_ip, dest_port):
     print(f"sending message to {dest_ip}:{dest_port}...\n")
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCP_sock:
@@ -8,6 +8,7 @@ def send_data(dest_ip, dest_port, message):
             TCP_sock.connect((dest_ip, dest_port))
             # .connect() will keep connection alive until closed.
             TCP_sock.settimeout(5)
+            message = input("Enter message to send: \n")
             TCP_sock.sendall(message.encode('utf-8'))
             print("waiting for reply...\n")
             data = TCP_sock.recv(1024)
@@ -20,5 +21,4 @@ def send_data(dest_ip, dest_port, message):
 
 dest_port = 5132
 dest_ip = '127.0.0.1'
-message = input("Enter message to send: \n")
-send_data(dest_ip, dest_port, message)
+send_data(dest_ip, dest_port)
