@@ -10,7 +10,7 @@ def receive_data(host, server_port, reply):
 		# Open to connections, with a maximum of 5 at once. No other processes will run while waiting for a connection
 		conn, client_addr = TCP_sock.accept()
 		with conn:
-			conn.settimeout(15)
+			conn.settimeout(5)
 			#This method controls how long the socket will wait for an operation \(like connect(), recv(), or send()) to complete.
 			print(f"Connected to: {client_addr}")
 			while True:
@@ -25,6 +25,8 @@ def receive_data(host, server_port, reply):
 					conn.sendall(reply.encode('utf-8'))	
 				except socket.timeout:
 					print("Receive time out.")
+					conn.close()
+					break
 host = ""
 # Empty string will accet any incoming ip connection
 server_port = 5132
