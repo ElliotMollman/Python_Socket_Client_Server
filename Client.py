@@ -1,13 +1,13 @@
-import socket
+import socket, time
 def send_data(dest_ip, dest_port):
-    print(f"sending message to {dest_ip}:{dest_port}...\n")
+    print(f"sending message to {dest_ip}:{dest_port} at time: " + str(time.ctime()) + "\n")
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCP_sock:
             # socket.AF_INET tells python the address family we are using, which is ipv4. We can use socket.AF_INET6 for ipv6 addresses.
             # SOCK_STREAM is the socket type for TCP, and the timeout for packets is specified as 10 seconds.
             TCP_sock.connect((dest_ip, dest_port))
             # .connect() will keep connection alive until closed.
-            TCP_sock.settimeout(5)
+            TCP_sock.settimeout(10)
             message = input("Enter message to send: \n")
             TCP_sock.sendall(message.encode('utf-8'))
             print("waiting for reply...\n")
