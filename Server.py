@@ -1,4 +1,4 @@
-import socket
+import socket, time
 def receive_data(host, server_port, reply):
 	with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCP_sock:
 		# socket.AF_INET tells python the address family we are using, which is ipv4. We can use socket.AF_INET6 for ipv6 addresses.
@@ -10,9 +10,9 @@ def receive_data(host, server_port, reply):
 		# Open to connections, with a maximum of 5 at once. No other processes will run while waiting for a connection
 		conn, client_addr = TCP_sock.accept()
 		with conn:
-			conn.settimeout(5)
+			conn.settimeout(10)
 			#This method controls how long the socket will wait for an operation \(like connect(), recv(), or send()) to complete.
-			print(f"Connected to: {client_addr}")
+			print(f"Connected to: {client_addr} at time:" + str(time.ctime()))
 			while True:
 				try:
 					data = conn.recv(2048)
@@ -22,7 +22,7 @@ def receive_data(host, server_port, reply):
 					elif not data:
 						# If the server doesn't receive any data, then it terminates the connection.
 						break
-					conn.sendall(reply.encode('utf-8'))	
+					conn.sendall(reply.encode('utf-8') + (time.ctime()).encode('utf-8'))	
 				except socket.timeout:
 					print("Receive time out.")
 					conn.close()
